@@ -1,0 +1,63 @@
+{
+  "$schema": "https://hypar.io/Schemas/Function.json",
+  "id": "a9cac5a1-f68d-4d2e-bfdd-0d204359bbe4",
+  "name": "Core By Floors",
+  "model_dependencies": [
+    {
+      "name": "Floors"
+    }
+  ],
+  "model_output": "Core",
+  "description": "Creates a schematic building core from floors.",
+  "language": "C#",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "Length": {
+        "type": "number",
+        "description": "The Length.",
+        "minimum": 1.0,
+        "maximum": 50,
+        "default": 18,
+        "multipleOf": 0.1,
+        "$hyparUnitType": "length"
+      },
+      "Width": {
+        "type": "number",
+        "description": "The Width.",
+        "minimum": 1.0,
+        "maximum": 50,
+        "default": 10,
+        "multipleOf": 0.1,
+        "$hyparUnitType": "length"
+      }
+    }
+  },
+  "overrides": {
+    "Cores": {
+      "context": "[*discriminator=Elements.ServiceCore]",
+      "identity": {
+        "Centroid": {
+          "$ref": "https://hypar.io/Schemas/Geometry/Vector3.json"
+        }
+      },
+      "schema": {
+        "Profile": {
+          "type": "object",
+          "properties": {
+            "Perimeter": {
+              "$ref": "https://hypar.io/Schemas/Geometry/Polygon.json"
+            }
+          }
+        }
+      }
+    }
+  },
+  "outputs": [],
+  "repository_url": "https://github.com/hypar-io/function",
+  "source_file_key": null,
+  "preview_image": null,
+  "element_types": [
+    "https://prod-api.hypar.io/schemas/ServiceCore"
+  ]
+}

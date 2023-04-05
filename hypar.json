@@ -1,21 +1,31 @@
 {
-  "$schema": "https://hypar.io/Schemas/Function.json",
+  "$schema": "https://hypar.io/Schemas/function.json",
   "id": "a9cac5a1-f68d-4d2e-bfdd-0d204359bbe4",
   "name": "Core By Floors",
   "model_dependencies": [
     {
-      "name": "Floors"
+      "name": "Floors",
+      "optional": true
+    },
+    {
+      "name": "Levels",
+      "optional": true
+    },
+    {
+      "name": "Conceptual Mass",
+      "optional": true
     }
   ],
   "model_output": "Core",
-  "description": "Creates a schematic building core from floors.",
+  "description": "Creates a schematic building core.",
   "language": "C#",
   "input_schema": {
     "type": "object",
     "properties": {
       "Length": {
+        "$hyparDeprecated": true,
         "type": "number",
-        "description": "The Length.",
+        "description": "The default length of the core.",
         "minimum": 1.0,
         "maximum": 50,
         "default": 18,
@@ -23,13 +33,22 @@
         "$hyparUnitType": "length"
       },
       "Width": {
+        "$hyparDeprecated": true,
         "type": "number",
-        "description": "The Width.",
+        "description": "The default width of the core.",
         "minimum": 1.0,
         "maximum": 50,
         "default": 10,
         "multipleOf": 0.1,
         "$hyparUnitType": "length"
+      },
+      "Additional Core Locations": {
+        "$hyparDeprecated": true,
+        "type": "array",
+        "description": "Specify additional core locations",
+        "items": {
+          "$ref": "https://hypar.io/Schemas/Geometry/Vector3.json"
+        }
       }
     }
   },
@@ -39,7 +58,21 @@
       "identity": {
         "Centroid": {
           "$ref": "https://hypar.io/Schemas/Geometry/Vector3.json"
+        },
+        "Creation Id": {
+          "type": "string",
+          "format": "uuid"
         }
+      },
+      "behaviors": {
+        "add": {
+          "schema": {
+            "Profile": {
+              "$ref": "https://hypar.io/Schemas/Geometry/Polygon.json"
+            }
+          }
+        },
+        "remove": true
       },
       "schema": {
         "Profile": {
@@ -51,6 +84,41 @@
           }
         }
       }
+    },
+    "Core Dimensions": {
+      "context": "[*discriminator=Elements.ServiceCore&BoundaryIsUnedited=true]",
+      "identity": {
+        "Centroid": {
+          "$ref": "https://hypar.io/Schemas/Geometry/Vector3.json"
+        },
+        "Creation Id": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "schema": {
+        "Length": {
+          "type": "number",
+          "description": "The default length of the core.",
+          "minimum": 1.0,
+          "maximum": 50,
+          "multipleOf": 0.1,
+          "$hyparUnitType": "length"
+        },
+        "Depth": {
+          "type": "number",
+          "description": "The default depth of the core.",
+          "minimum": 1.0,
+          "maximum": 50,
+          "multipleOf": 0.1,
+          "$hyparUnitType": "length"
+        }
+      }
+    }
+  },
+  "messages": {
+    "en": {
+      "name": "Core"
     }
   },
   "outputs": [],
@@ -58,6 +126,9 @@
   "source_file_key": null,
   "preview_image": null,
   "element_types": [
-    "https://prod-api.hypar.io/schemas/ServiceCore"
+    "https://prod-api.hypar.io/schemas/ServiceCore",
+    "https://prod-api.hypar.io/schemas/LevelVolume",
+    "https://prod-api.hypar.io/schemas/SpaceBoundary",
+    "https://prod-api.hypar.io/schemas/CoreArea"
   ]
 }

@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace CoreByFloors
 {
-    public class CoreByFloorsOutputs: ResultsBase
+    public class CoreByFloorsOutputs: SystemResults
     {
 
 

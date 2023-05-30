@@ -214,7 +214,8 @@ namespace CoreByFloors
                             };
                             sb.AdditionalProperties["Building Name"] = level.BuildingName;
                             sb.AdditionalProperties["Level Name"] = level.Name;
-                            output.Model.AddElements(sb);
+                            var coreLines = new CoreLines(core.Profile, level.Transform);
+                            output.Model.AddElements(sb, coreLines);
                         }
                     }
                 }

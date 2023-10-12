@@ -169,7 +169,7 @@ namespace CoreByFloors
 
                             var boundary = coreInThisGroup.Value.Profile.Perimeter;
                             var rep = new Representation(new[] { new Extrude(boundary, matchingExistingCore.Height, Vector3.ZAxis, false) });
-                            var overrideCore = new Elements.ServiceCore(boundary, 0, matchingExistingCore.Height, coreInThisGroup.Identity.Centroid, new Transform(0, 0, minHeight), BuiltInMaterials.Concrete, rep, false, Guid.NewGuid(), null);
+                            var overrideCore = new ServiceCore(boundary, 0, matchingExistingCore.Height, coreInThisGroup.Identity.Centroid, new Transform(0, 0, minHeight), BuiltInMaterials.Concrete, rep, false, Guid.NewGuid(), null);
                             Identity.AddOverrideIdentity(overrideCore, "Cores", coreInThisGroup.Id, coreInThisGroup.Identity);
                             allCores.Remove(matchingExistingCore);
                             overrideCore.BoundaryIsUnedited = false;
@@ -217,6 +217,15 @@ namespace CoreByFloors
                             var coreLines = new CoreLines(core.Profile, level.Transform);
                             output.Model.AddElements(sb, coreLines);
                         }
+
+                        // Add curve representations so that core are visible in plan views.
+                        // Ideally, this would look like an outline around all of the core edges.
+                        // This is simply putting curve around the top and bottom of the extruded solid.
+                        core.RepresentationInstances = new List<RepresentationInstance>{
+                            new(new CurveRepresentation(core.Profile.Perimeter.TransformedPolygon(new Transform(new Vector3(0, 0, core.Height))), false), BuiltInMaterials.Black),
+                            new(new SolidRepresentation(new Extrude(core.Profile, core.Height, Vector3.ZAxis, false)), BuiltInMaterials.Concrete),
+                            new(new CurveRepresentation(core.Profile.Perimeter, false), BuiltInMaterials.Black)
+                        };
                     }
                 }
                 output.Model.AddElements(allCores);

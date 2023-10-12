@@ -29,18 +29,18 @@ namespace CoreByFloors
     {
         [Newtonsoft.Json.JsonConstructor]
         
-        public CoreByFloorsInputs(double @length, double @width, IList<Vector3> @additionalCoreLocations, Overrides @overrides, string bucketName, string uploadsBucket, Dictionary<string, string> modelInputKeys, string gltfKey, string elementsKey, string ifcKey):
+        public CoreByFloorsInputs(IList<Vector3> @additionalCoreLocations, double @length, double @width, Overrides @overrides, string bucketName, string uploadsBucket, Dictionary<string, string> modelInputKeys, string gltfKey, string elementsKey, string ifcKey):
         base(bucketName, uploadsBucket, modelInputKeys, gltfKey, elementsKey, ifcKey)
         {
             var validator = Validator.Instance.GetFirstValidatorForType<CoreByFloorsInputs>();
             if(validator != null)
             {
-                validator.PreConstruct(new object[]{ @length, @width, @additionalCoreLocations, @overrides});
+                validator.PreConstruct(new object[]{ @additionalCoreLocations, @length, @width, @overrides});
             }
         
+            this.AdditionalCoreLocations = @additionalCoreLocations;
             this.Length = @length;
             this.Width = @width;
-            this.AdditionalCoreLocations = @additionalCoreLocations;
             this.Overrides = @overrides ?? this.Overrides;
         
             if(validator != null)
@@ -49,19 +49,19 @@ namespace CoreByFloors
             }
         }
     
+        /// <summary>Specify additional core locations</summary>
+        [Newtonsoft.Json.JsonProperty("Additional Core Locations", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IList<Vector3> AdditionalCoreLocations { get; set; }
+    
         /// <summary>The default length of the core.</summary>
         [Newtonsoft.Json.JsonProperty("Length", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1.0D, 50D)]
+        [System.ComponentModel.DataAnnotations.Range(1D, 50D)]
         public double Length { get; set; } = 18D;
     
         /// <summary>The default width of the core.</summary>
         [Newtonsoft.Json.JsonProperty("Width", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1.0D, 50D)]
+        [System.ComponentModel.DataAnnotations.Range(1D, 50D)]
         public double Width { get; set; } = 10D;
-    
-        /// <summary>Specify additional core locations</summary>
-        [Newtonsoft.Json.JsonProperty("Additional Core Locations", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IList<Vector3> AdditionalCoreLocations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("overrides", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Overrides Overrides { get; set; } = new Overrides();
@@ -417,12 +417,12 @@ namespace CoreByFloors
     
         /// <summary>The default length of the core.</summary>
         [Newtonsoft.Json.JsonProperty("Length", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1.0D, 50D)]
+        [System.ComponentModel.DataAnnotations.Range(1D, 50D)]
         public double Length { get; set; }
     
         /// <summary>The default depth of the core.</summary>
         [Newtonsoft.Json.JsonProperty("Depth", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [System.ComponentModel.DataAnnotations.Range(1.0D, 50D)]
+        [System.ComponentModel.DataAnnotations.Range(1D, 50D)]
         public double Depth { get; set; }
     
     }

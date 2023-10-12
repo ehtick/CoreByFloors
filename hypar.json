@@ -1,54 +1,60 @@
 {
-  "$schema": "https://hypar.io/Schemas/function.json",
+  "$schema": "https://hypar.io/Schemas/Function.json",
   "id": "a9cac5a1-f68d-4d2e-bfdd-0d204359bbe4",
   "name": "Core By Floors",
+  "description": "Creates a schematic building core.",
+  "language": "C#",
   "model_dependencies": [
     {
+      "autohide": false,
       "name": "Floors",
       "optional": true
     },
     {
+      "autohide": false,
       "name": "Levels",
       "optional": true
     },
     {
+      "autohide": false,
       "name": "Conceptual Mass",
       "optional": true
     }
   ],
   "model_output": "Core",
-  "description": "Creates a schematic building core.",
-  "language": "C#",
   "input_schema": {
     "type": "object",
     "properties": {
-      "Length": {
-        "$hyparDeprecated": true,
-        "type": "number",
-        "description": "The default length of the core.",
-        "minimum": 1.0,
-        "maximum": 50,
-        "default": 18,
-        "multipleOf": 0.1,
-        "$hyparUnitType": "length"
-      },
-      "Width": {
-        "$hyparDeprecated": true,
-        "type": "number",
-        "description": "The default width of the core.",
-        "minimum": 1.0,
-        "maximum": 50,
-        "default": 10,
-        "multipleOf": 0.1,
-        "$hyparUnitType": "length"
-      },
       "Additional Core Locations": {
+        "description": "Specify additional core locations",
         "$hyparDeprecated": true,
         "type": "array",
-        "description": "Specify additional core locations",
+        "$hyparOrder": 2,
         "items": {
           "$ref": "https://hypar.io/Schemas/Geometry/Vector3.json"
         }
+      },
+      "Length": {
+        "multipleOf": 0.1,
+        "default": 18,
+        "$hyparDeprecated": true,
+        "description": "The default length of the core.",
+        "maximum": 50,
+        "type": "number",
+        "$hyparUnitType": "length",
+        "$hyparOrder": 0,
+        "minimum": 1
+      },
+      "Width": {
+        "multipleOf": 0.1,
+        "default": 10,
+        "$hyparDeprecated": true,
+        "description": "The default width of the core.",
+        "maximum": 50,
+        "type": "number",
+        "$hyparUnitType": "length",
+        "$hyparOrder": 1,
+        "minimum": 1
       }
     }
   },
@@ -64,16 +70,7 @@
           "format": "uuid"
         }
       },
-      "behaviors": {
-        "add": {
-          "schema": {
-            "Profile": {
-              "$ref": "https://hypar.io/Schemas/Geometry/Polygon.json"
-            }
-          }
-        },
-        "remove": true
-      },
+      "paradigm": "edit",
       "schema": {
         "Profile": {
           "type": "object",
@@ -83,6 +80,23 @@
             }
           }
         }
+      },
+      "verbs": {
+        "add": null,
+        "remove": null,
+        "edit": null,
+        "revert": null
+      },
+      "dependency": null,
+      "behaviors": {
+        "add": {
+          "schema": {
+            "Profile": {
+              "$ref": "https://hypar.io/Schemas/Geometry/Polygon.json"
+            }
+          }
+        },
+        "remove": true
       }
     },
     "Core Dimensions": {
@@ -96,39 +110,50 @@
           "format": "uuid"
         }
       },
+      "paradigm": "edit",
       "schema": {
         "Length": {
-          "type": "number",
-          "description": "The default length of the core.",
-          "minimum": 1.0,
-          "maximum": 50,
           "multipleOf": 0.1,
-          "$hyparUnitType": "length"
+          "description": "The default length of the core.",
+          "maximum": 50,
+          "type": "number",
+          "$hyparUnitType": "length",
+          "$hyparOrder": 0,
+          "minimum": 1
         },
         "Depth": {
-          "type": "number",
-          "description": "The default depth of the core.",
-          "minimum": 1.0,
-          "maximum": 50,
           "multipleOf": 0.1,
-          "$hyparUnitType": "length"
+          "description": "The default depth of the core.",
+          "maximum": 50,
+          "type": "number",
+          "$hyparUnitType": "length",
+          "$hyparOrder": 1,
+          "minimum": 1
         }
-      }
-    }
-  },
-  "messages": {
-    "en": {
-      "name": "Core"
+      },
+      "verbs": {
+        "add": null,
+        "remove": null,
+        "edit": null,
+        "revert": null
+      },
+      "dependency": null,
+      "behaviors": null
     }
   },
   "outputs": [],
-  "repository_url": "https://github.com/hypar-io/function",
-  "source_file_key": null,
-  "preview_image": null,
   "element_types": [
     "https://prod-api.hypar.io/schemas/ServiceCore",
     "https://prod-api.hypar.io/schemas/LevelVolume",
     "https://prod-api.hypar.io/schemas/SpaceBoundary",
     "https://prod-api.hypar.io/schemas/CoreArea"
-  ]
+  ],
+  "repository_url": "https://github.com/hypar-io/function",
+  "last_updated": "2023-04-27T15:52:55.967423",
+  "cli_version": "1.9.0-alpha.3",
+  "messages": {
+    "en": {
+      "name": "Core"
+    }
+  }
 }

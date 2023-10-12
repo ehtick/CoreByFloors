@@ -61,11 +61,18 @@ namespace CoreByFloors
             Console.WriteLine($"Time to load assemblies: {sw.Elapsed.TotalSeconds})");
 
             if(this.store == null)
-            {
-                this.store = new S3ModelStore<CoreByFloorsInputs>(RegionEndpoint.GetBySystemName("us-west-1"));
+            { 
+                if (args.SignedResourceUrls == null)
+                {
+                    this.store = new S3ModelStore<CoreByFloorsInputs>(RegionEndpoint.GetBySystemName("us-west-1"));
+                }
+                else
+                {
+                    this.store = new UrlModelStore<CoreByFloorsInputs>();
+                }
             }
 
-            var l = new InvocationWrapper<CoreByFloorsInputs,CoreByFloorsOutputs>(store, CoreByFloors.Execute);
+            var l = new InvocationWrapper<CoreByFloorsInputs,CoreByFloorsOutputs> (store, CoreByFloors.Execute);
             var output = await l.InvokeAsync(args);
             return output;
         }

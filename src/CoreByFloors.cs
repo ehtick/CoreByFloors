@@ -22,12 +22,19 @@ namespace CoreByFloors
             var floors = (floorsModel ?? new Model()).AllElementsOfType<Floor>();
 
             var hasLevels = inputModels.TryGetValue("Levels", out var levelsModel);
-            var levelVolumes = hasLevels ? levelsModel.AllElementsOfType<LevelVolume>().OrderBy(f => f.Transform.Origin.Z).ToList() : new List<LevelVolume>();
+            var levelVolumes = hasLevels ? levelsModel.AllElementsOfType<LevelVolume>().ToList() : new List<LevelVolume>();
             if (inputModels.TryGetValue("Conceptual Mass", out var massModel))
             {
                 levelVolumes.AddRange(massModel.AllElementsOfType<LevelVolume>());
                 hasLevels = true;
             }
+            if (floorsModel != null)
+            {
+                levelVolumes.AddRange(floorsModel.AllElementsOfType<LevelVolume>());
+                hasLevels = true;
+            }
+            levelVolumes = levelVolumes.OrderBy(f => f.Transform.Origin.Z).ToList();
+
             if (!floors.Any() && levelVolumes.Count < 1)
             {
                 output.Warnings.Add("No Floors or Levels found in model.");
